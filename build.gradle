@@ -1,0 +1,29 @@
+plugins {
+    id 'java-library'
+    id 'maven'
+    id 'net.ltgt.apt' version '0.10'
+}
+
+group 'org.glcrazier'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+uploadArchives {
+    repositories {
+        mavenLocal()
+    }
+}
+
+dependencies {
+    api 'org.apache.poi:poi-ooxml:4.1.1'
+    implementation 'org.apache.commons:commons-lang3:3.8.1'
+
+    compileOnly 'org.projectlombok:lombok:1.18.4'
+    annotationProcessor 'org.projectlombok:lombok:1.18.4'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
