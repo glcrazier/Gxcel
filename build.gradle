@@ -1,11 +1,11 @@
 plugins {
     id 'java-library'
-    id 'maven'
+    id 'maven-publish'
     id 'net.ltgt.apt' version '0.10'
 }
 
 group 'org.glcrazier'
-version '1.0-SNAPSHOT'
+version '1.0.0'
 
 sourceCompatibility = 1.8
 
@@ -13,9 +13,21 @@ repositories {
     mavenCentral()
 }
 
-uploadArchives {
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allJava
+    classifier = 'sources'
+}
+
+publishing {
     repositories {
         mavenLocal()
+    }
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = 'gxcel'
+            artifact sourcesJar
+            from components.java
+        }
     }
 }
 

@@ -1,6 +1,5 @@
 package org.glcrazier.gxcel;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -79,6 +78,9 @@ public class Gxcel {
                 }
                 Class<?> valueType = method.getParameterTypes()[0];
                 Cell cell = row.getCell(i);
+                if (cell == null) {
+                    break;
+                }
                 if (valueType == String.class) {
                     String value = cell.getStringCellValue();
                     try {
