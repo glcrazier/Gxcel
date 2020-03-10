@@ -1,6 +1,7 @@
 package org.glcrazier.gxcel;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -10,6 +11,7 @@ import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class Gxcel {
@@ -70,8 +72,7 @@ public class Gxcel {
                 //
                 continue;
             }
-            int count = row.getPhysicalNumberOfCells();
-            for (int i = 0; i < count; i++) {
+            for (int i = row.getFirstCellNum(); i <= row.getLastCellNum(); i++) {
                 Method method = methods.get(i);
                 if (method == null) {
                     continue;
@@ -82,7 +83,13 @@ public class Gxcel {
                     break;
                 }
                 if (valueType == String.class) {
-                    String value = cell.getStringCellValue();
+                    CellType cellType = cell.getCellType();
+                    String value = null;
+                    if (cellType == CellType.STRING) {
+                        value = cell.getStringCellValue();
+                    } else if (cellType == CellType.NUMERIC) {
+                        value = new DecimalFormat("#").format(cell.getNumericCellValue());
+                    }
                     try {
                         method.invoke(object, value);
                     } catch (Exception e) {
